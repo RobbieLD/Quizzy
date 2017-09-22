@@ -45,6 +45,14 @@ namespace Quizzy.Client
 
         public void Exit() => Disconnect();
 
+        public void ShowHelp()
+        {
+            foreach (var command in Enum.GetNames(typeof(Commands)))
+            {
+                Console.WriteLine(command);
+            }
+        }
+
         public bool RecogniseCommand(string command) => Enum.IsDefined(typeof(Commands), command);
 
         private void Disconnect()

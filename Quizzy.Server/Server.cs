@@ -1,9 +1,7 @@
 ﻿using System;
 using Quizzy.Services;
-using System.Text;
 using System.Net.Sockets;
 using System.Net;
-using System.Threading.Tasks;
 using Quizzy.Common;
 using System.Threading;
 using System.Collections.Generic;
@@ -23,8 +21,16 @@ namespace Quizzy.Server
             _questionService = questionService;
             _listener = new TcpListener(IPAddress.Parse(Constants.SERVER_IP), Constants.SERVER_PORT);
         }
-        
+
         #region Controllable Interface
+
+        public void ShowHelp()
+        {
+            foreach(var command in Enum.GetNames(typeof(Commands)))
+            {
+                Console.WriteLine(command);
+            }
+        }
 
         public void AcceptCommand(string command)
         {
@@ -180,7 +186,7 @@ namespace Quizzy.Server
                 }
             }
         }
-        
+
         #endregion
     }
 }

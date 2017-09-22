@@ -35,6 +35,9 @@ namespace Quizzy.Common
                         case Commands.CLEAR:
                             Console.Clear();
                             break;
+                        case Commands.HELP:
+                            ShowHelp();
+                            break;
                     }
                 }
                 else if (_controllable.RecogniseCommand(command))
@@ -50,6 +53,16 @@ namespace Quizzy.Common
 
                 Console.WriteLine();
             }
+        }
+
+        private void ShowHelp()
+        {
+            Console.WriteLine("The following commands are supported. You'll have to guess what they do :)");
+            foreach(var command in Enum.GetNames(typeof(Commands)))
+            {
+                Console.WriteLine(command);
+            }
+            _controllable.ShowHelp();
         }
     }
 }
