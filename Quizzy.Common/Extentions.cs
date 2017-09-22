@@ -33,10 +33,11 @@ namespace Quizzy.Common
 
             byte[] bytesLength = BitConverter.GetBytes(bytes.Length);
 
-            NetworkStream stream = client.GetStream();
-
-            stream.WriteAsync(bytesLength, 0, 4);
-            stream.WriteAsync(bytes, 0, bytes.Length);
+            using (NetworkStream stream = client.GetStream())
+            {
+                stream.WriteAsync(bytesLength, 0, 4);
+                stream.WriteAsync(bytes, 0, bytes.Length);
+            }
         }
 
         /// <summary>
@@ -52,10 +53,11 @@ namespace Quizzy.Common
             // now we have to encode length of the byte array into the first 4 bytes of the mesage
             byte[] bytesLength = BitConverter.GetBytes(bytes.Length);
 
-            NetworkStream stream = client.GetStream();
-
-            stream.WriteAsync(bytesLength, 0, 4);
-            stream.WriteAsync(bytes, 0, bytes.Length);
+            using (NetworkStream stream = client.GetStream())
+            {
+                stream.WriteAsync(bytesLength, 0, 4);
+                stream.WriteAsync(bytes, 0, bytes.Length);
+            }
         }
 
         /// <summary>
@@ -68,29 +70,31 @@ namespace Quizzy.Common
         {
             byte[] prefixBuffer = new byte[bufferPrfixSize];
 
-            NetworkStream stream = client.GetStream();
-
-            await stream.ReadAsync(prefixBuffer, 0, bufferPrfixSize);
-
-            int messageLength = BitConverter.ToInt32(prefixBuffer, 0);
-
-            byte[] buffer = new byte[messageLength];
-
-            await stream.ReadAsync(buffer, 0, messageLength);
-
-            // try and convert the stream into a question. If that fails just return it as a string
-            try
+            using (NetworkStream stream = client.GetStream())
             {
-                BinaryFormatter formatter = new BinaryFormatter();
 
-                using (MemoryStream memoryStream = new MemoryStream(buffer))
+                await stream.ReadAsync(prefixBuffer, 0, bufferPrfixSize);
+
+                int messageLength = BitConverter.ToInt32(prefixBuffer, 0);
+
+                byte[] buffer = new byte[messageLength];
+
+                await stream.ReadAsync(buffer, 0, messageLength);
+
+                // try and convert the stream into a question. If that fails just return it as a string
+                try
                 {
-                    return (Result)formatter.Deserialize(memoryStream);
+                    BinaryFormatter formatter = new BinaryFormatter();
+
+                    using (MemoryStream memoryStream = new MemoryStream(buffer))
+                    {
+                        return (Result)formatter.Deserialize(memoryStream);
+                    }
                 }
-            }
-            catch
-            {
-                return buffer.DecodeMessage();
+                catch
+                {
+                    return buffer.DecodeMessage();
+                }
             }
         }
 
