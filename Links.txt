@@ -1,0 +1,17 @@
+https://docs.microsoft.com/en-us/dotnet/framework/network-programming/asynchronous-server-socket-example
+https://docs.microsoft.com/en-us/dotnet/framework/network-programming/asynchronous-client-socket-example
+
+
+http://www.c-sharpcorner.com/article/building-a-tcp-server-in-net-core-on-ubuntu/
+
+https://www.infoworld.com/article/3081443/application-development/how-to-implement-an-asynchronous-socket-in-c.html
+
+
+
+
+
+// Example of Async Clients 
+https://stackoverflow.com/questions/12630827/using-net-4-5-async-feature-for-socket-programming
+
+// Sending custom objects over TCP
+https://stackoverflow.com/questions/2316397/sending-and-receiving-custom-objects-using-tcpclient-class-in-c-sharp
