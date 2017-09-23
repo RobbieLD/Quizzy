@@ -114,13 +114,13 @@ namespace Quizzy.Client
 
             try
             {
-                Console.WriteLine($"Connecting to server at {Constants.SERVER_IP}:{Constants.SERVER_PORT}");
+                Console.WriteLine($"Connecting to server at {Constants.CLIENT_IP}:{Constants.CLIENT_PORT}");
 
                 _client = new TcpClient();
 
                 // Wait for the connection
-                await _client.ConnectAsync(Constants.SERVER_IP, Constants.SERVER_PORT);
-
+                await _client.ConnectAsync(Constants.CLIENT_IP, Constants.CLIENT_PORT);
+                
                 HandleReadDataAsync(_client);
             }
             catch(Exception e)
