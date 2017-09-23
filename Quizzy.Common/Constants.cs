@@ -7,6 +7,7 @@
         // TODO: Make this dynamic
         public const int BUFFER_PREFIX_LENGTH = 4;
         // TODO: Make this come form the shell
-        public const int NUMBER_OF_QUESTIONS = 3;
+        public const int NUMBER_OF_QUESTIONS = 10;
+        public const int COUNT_DOWN = 9;
     }
 }

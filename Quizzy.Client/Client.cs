@@ -12,6 +12,7 @@ namespace Quizzy.Client
         private CancellationTokenSource _token;
         private int _score = 0;
         private Result _currentQuestion;
+        private bool _countDown;
 
         public Client()
         {
@@ -69,6 +70,12 @@ namespace Quizzy.Client
 
         private void AnswerQuestion(string answer)
         {
+            if(!_countDown)
+            {
+                Console.WriteLine("You have already answered this question");
+                return;
+            }
+
             // don't let them have another go at the question
             if (string.IsNullOrWhiteSpace(_currentQuestion.correct_answer))
             {
@@ -88,6 +95,7 @@ namespace Quizzy.Client
 
             // null out the question answer so they can't answer it again
             _currentQuestion.correct_answer = string.Empty;
+            _countDown = false;
         }
 
         private async void ConnectAsync()
@@ -121,6 +129,22 @@ namespace Quizzy.Client
             }
         }
 
+        private void CountDown(int seconds)
+        {
+            Console.WriteLine();
+
+            for(int i = 0; i < seconds; i++)
+            {
+                if (!_countDown) return;
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(seconds - i);
+                Console.SetCursorPosition(0, Console.CursorTop + 1);
+                Thread.Sleep(1000);
+            }
+
+            _countDown = false;
+        }
+
         private async void HandleReadDataAsync(TcpClient client)
         {
             try
@@ -132,7 +156,9 @@ namespace Quizzy.Client
                     Result question = message as Result;
 
                     question.Disaply();
+                    _countDown = true;
                     _currentQuestion = question;
+                    CountDown(Constants.COUNT_DOWN);
                 }
                 else
                 {
